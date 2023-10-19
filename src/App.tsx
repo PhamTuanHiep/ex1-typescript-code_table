@@ -8,8 +8,8 @@ function App() {
     <div className="App">
       <header className="App-header">
        Learn React
-       <TableStudents/>
       </header>
+       <TableStudents/>
     </div>
   );
 }

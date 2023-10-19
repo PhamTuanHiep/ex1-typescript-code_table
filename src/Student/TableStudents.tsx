@@ -52,49 +52,13 @@ export default function TableStudents(){
         }
     },
     ];
-    // const infData: Student[] = [
-    //     {
-    //         key:'1',
-    //         name:'Xuan Huy',
-    //         email:'XuanHuy@gmail.com',
-    //         password:'xinchao',
-    //         code:7,
-    //     },
-    //     {
-    //         key:'2',
-    //         name:'Quynh Anh',
-    //         email:'QuynhAnh@gmail.com',
-    //         password:'xinchao',
-    //         code:5,
-    //         classification:"Average"
-    //     },
-    //     {
-    //         key:'3',
-    //         name:'Tao Thao',
-    //         email:'TaoThao@gmail.com',
-    //         password:'xinchao',
-    //         code:9.5,
-    //     },
-    // ];
-    // const NData : Student[]= infData.map((student:Student)=>{
-    //     return {
-    //         key: student.key,
-    //         name:student.name,
-    //         email:student.email,
-    //         password: student.password,
-    //         code:student.code,
-    //         classification:"Good"
-    //     }
-    // })
-    // console.log(NData)
-    const defaultData: Student[] = [
+    const infData: Student[] = [
         {
             key:'1',
             name:'Xuan Huy',
             email:'XuanHuy@gmail.com',
             password:'xinchao',
             code:7,
-            classification:"Pretty"
         },
         {
             key:'2',
@@ -110,11 +74,63 @@ export default function TableStudents(){
             email:'TaoThao@gmail.com',
             password:'xinchao',
             code:9.5,
-            classification:"Good"
         },
     ];
+    const defaultData : Student[]= infData.map((student:Student)=>{
+        const cd: number=student.code
+        let type: string=''
+        if(cd<5){
+            type='Bad'
+        }
+        else if(cd>= 5 && cd <6.5){
+            type='Average'
+        }
+        else if(cd>= 6.5 && cd <8){
+            type='Good'
+        }
+        else if(cd>= 8.5 && cd < 9){
+            type='Very Good'
+        }
+        else{
+            type='Excellent'
+        }
+        return {
+            key: student.key,
+            name:student.name,
+            email:student.email,
+            password: student.password,
+            code:student.code,
+            classification:type
+        }
+    })
+
+    // const defaultData: Student[] = [
+    //     {
+    //         key:'1',
+    //         name:'Xuan Huy',
+    //         email:'XuanHuy@gmail.com',
+    //         password:'xinchao',
+    //         code:7,
+    //         classification:"Good"
+    //     },
+    //     {
+    //         key:'2',
+    //         name:'Quynh Anh',
+    //         email:'QuynhAnh@gmail.com',
+    //         password:'xinchao',
+    //         code:5,
+    //         classification:"Average"
+    //     },
+    //     {
+    //         key:'3',
+    //         name:'Tao Thao',
+    //         email:'TaoThao@gmail.com',
+    //         password:'xinchao',
+    //         code:9.5,
+    //         classification:"Very Good"
+    //     },
+    // ];
     const [point,setPoint] =useState(0)
-    const [n,setN] =useState(1)
     useEffect(()=>{
         setData(defaultData)
     },[])
@@ -126,14 +142,23 @@ export default function TableStudents(){
         code:5,
         classification:"Average"
     }])
-    const searchCode=(e:any)=>{
-        setPoint(e.target.value)
-        let newData:Student[]
-        newData=defaultData.filter((dt:Student)=>{
-            return dt.code > e.target.value
-        })
-        setData(newData)
-        console.log('newData=',newData)
+    const searchCode=(e:any):void=>{
+        const valueInput: any = + e.target.value 
+        console.log("typeof valueInput:",typeof valueInput)
+        console.log("valueInput:",valueInput)
+        //giá trị nhập ko thỏa mãn -> block ko chạy -> valueInput ko nhận được giá trị mới: 
+        //mà nó đang bị two-way-biding (ràng buộc 2 chiều) -> ko nhập được giá trị mới trên input
+        if(!isNaN(valueInput)){
+            setPoint(e.target.value)
+            let newData:Student[]
+            newData=defaultData.filter((dt:Student)=>{
+                console.log("typeof dt.code:",typeof dt.code)
+    
+                return dt.code > e.target.value
+            })
+            setData(newData)
+            console.log('newData=',newData)
+        }
     }
     return(
         <div id='form_container'>
